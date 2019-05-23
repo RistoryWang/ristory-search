@@ -1,4 +1,4 @@
-#ristory-search
+# ristory-search
 
 # 环境
 单节点环境(Centos7)，基于elasticsearch-7.0.0+elasticsearch-analysis-ik-7.0.0
@@ -19,8 +19,8 @@ unzip elasticsearch-analysis-ik-7.0.0.zip
 systemctl restart elasticsearch
 ```
 
-#ES配置
-##1.jvm配置：/etc/elasticsearch/jvm.options
+# ES配置
+## 1.jvm配置：/etc/elasticsearch/jvm.options
 ```
 ## JVM configuration
 
@@ -145,7 +145,7 @@ systemctl restart elasticsearch
 9-:-Djava.locale.providers=COMPAT
 ```
 
-##2. es配置 ： /etc/elasticsearch/elasticsearch.yml 
+## 2. es配置 ： /etc/elasticsearch/elasticsearch.yml 
 ```
 # ======================== Elasticsearch Configuration =========================
 #
@@ -237,7 +237,7 @@ discovery.seed_hosts: [192.168.10.221]
 #action.destructive_requires_name: true
 ```
 
-#例子
+# 例子
 index、mapping、docs、query
 ```
 [root@vm-221 ik]# curl -XPUT http://localhost:9200/index
@@ -306,7 +306,7 @@ index、mapping、docs、query
 {"content":"中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首"}
 ,"highlight":{"content":["<tag1>中国</tag1>驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首"]}}]}}[root@vm-221 ik]# 
 ```
-#IK配置
+# IK配置
 ik配置 ： /usr/share/elasticsearch/plugins/ik/config/IKAnalyzer.cfg.xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -323,7 +323,7 @@ ik配置 ： /usr/share/elasticsearch/plugins/ik/config/IKAnalyzer.cfg.xml
         <entry key="remote_ext_stopwords">http://ikdict.panguyr.com/remote_ext_stopwords</entry>
 </properties>
 ```
-#服务
+# 服务
 git@git.panguyr.tech:pg-server/pg-search.git
 ```
 curl -XPOST http://127.0.0.1:9999/pgsearch/post\?uRL\=_search -H 'Content-Type:application/json' -d'
@@ -335,7 +335,7 @@ curl -XPOST http://127.0.0.1:9999/pgsearch/post\?uRL\=_search -H 'Content-Type:a
 ```
 
 
-#热更新
+# 热更新
 * [ ] 远程扩展字段、远程扩展停止词字典
 * [ ] HTTP字典服务（ikdict）：url请求到此服务，返回的http-header需包含ETAG 和 Last-Modified，当任一值发生变化，IK插件触发重取词库动作，从而热更新词库
 * [ ] 更新字典服务（refresh-ikdict）
