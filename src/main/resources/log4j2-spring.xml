@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF" >
+    <Properties>
+        <property name="APP_NAME">${bundle:application:spring.application.name}</property>
+        <property name="LOG_BASE_FOLDER">${sys:user.home}/logs/${APP_NAME}/${APP_NAME}-${bundle:application:release}</property>
+        <property name="FILE_PREFIX">${APP_NAME}</property>
+        <property name="EVERY_FILE_SIZE">100MB</property>
+        <property name="LOG_CHARSET">UTF-8</property>
+        <Property name="PID">????</Property>
+        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
+        <!--%clr{[%36.36X{request_id}][%15.15X{host_ip}][%5.5X{host_port}][%15.15X{client_ip}][%20.20X{user_id}][%40.40X{url}][%7.7X{verb}]}{blue}-->
+        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <Property name="FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} ${sys:PID} --- [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+    </Properties>
+    <CustomLevels>
+        <CustomLevel name="EMER" intLevel="150" />
+        <CustomLevel name="BEAT" intLevel="230" />
+        <CustomLevel name="BIZ" intLevel="270" />
+        <CustomLevel name="DIAG" intLevel="350" />
+        <CustomLevel name="NOTICE" intLevel="450" />
+        <CustomLevel name="VERBOSE" intLevel="550" />
+    </CustomLevels>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}" />
+        </Console>
+        <Sentry name="Sentry" />
+
+        <RollingFile name="RollingFileAll" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-all.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-trace-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="all" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <!--<ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileTrace" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-trace.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-trace-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="verbose" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileVerbose" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-verbose.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-verbose-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="verbose" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileDebug" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-debug.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-debug-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="notice" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileNotice" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-notice.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-notice-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="notice" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileInfo" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-info.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-info-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="diag" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileDiag" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-diag.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-diag-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="diag" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileWarn" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-warn.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-warn-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="biz" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <RollingFile name="RollingFileBiz" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-biz.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-biz-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="beat" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="biz" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <RollingFile name="RollingFileBeat" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-beat.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-beat-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="beat" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <RollingFile name="RollingFileError" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-error.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-error-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="emer" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileEmer" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-emer.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-emer-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="emer" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileFatal" fileName="${LOG_BASE_FOLDER}/${FILE_PREFIX}-fatal.log"
+                     filePattern="${LOG_BASE_FOLDER}/$${date:yyyy-MM}/${FILE_PREFIX}-fatal-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="fatal" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!--from application -->
+        <!--<Logger name="org.springframework.security" level="info" />-->
+        <!--<Logger name="org.springframework.web" level="info" />-->
+        <Logger name="org.hibernate" level="error" />
+        <!--new -->
+        <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
+        <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
+        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
+        <Logger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>
+        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
+        <Logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error" />
+        <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
+        <Logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
+        <Logger name="com.ristory.Application" level="info"/>
+        <Logger name="com.ristory.search" level="info"/>
+        <!--<logger name="org.apache.ibatis.logging.jdbc.BaseJdbcLogger" level="warn"/>-->
+        <Root level="warn">
+            <AppenderRef ref="Console" />
+            <appender-ref ref="Sentry" level="warn" />
+            <appender-ref ref="RollingFileAll"/>
+            <appender-ref ref="RollingFileTrace"/>
+            <appender-ref ref="RollingFileVerbose"/>
+            <appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileNotice"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileDiag"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileBiz"/>
+            <appender-ref ref="RollingFileBeat"/>
+            <appender-ref ref="RollingFileError"/>
+            <appender-ref ref="RollingFileEmer"/>
+            <appender-ref ref="RollingFileFatal"/>
+        </Root>
+    </Loggers>
+</Configuration>
