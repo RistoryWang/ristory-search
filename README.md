@@ -324,9 +324,8 @@ ik配置 ： /usr/share/elasticsearch/plugins/ik/config/IKAnalyzer.cfg.xml
 </properties>
 ```
 # 服务
-git@git.panguyr.tech:pg-server/pg-search.git
 ```
-curl -XPOST http://127.0.0.1:9999/pgsearch/post\?uRL\=_search -H 'Content-Type:application/json' -d'
+curl -XPOST http://127.0.0.1:7360/search/post\?uRL\=_search -H 'Content-Type:application/json' -d'
 {
  "query" : { "match" : { "content" : "自首" }}
 }
