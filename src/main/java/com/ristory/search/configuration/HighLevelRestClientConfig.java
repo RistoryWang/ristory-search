@@ -19,7 +19,7 @@ public class HighLevelRestClientConfig {
 	@Bean
 	public RestHighLevelClient HighLevelRestClient() {
 		return new RestHighLevelClient(
-				RestClient.builder(new HttpHost("192.168.10.221", 9200, "http"))
+				RestClient.builder(new HttpHost("192.168.1.244", 9200, "http"))
 					.setDefaultHeaders(new Header[] {
 							new BasicHeader("accept","application/json"), 
 							new BasicHeader("content-type","application/json")})

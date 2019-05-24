@@ -17,7 +17,7 @@ public class LowLevelRestClientConfig {
 	
 	@Bean
 	public RestClient LowLevelRestClient() {
-		return RestClient.builder(new HttpHost("192.168.10.221", 9200, "http"))
+		return RestClient.builder(new HttpHost("192.168.1.244", 9200, "http"))
 			.setDefaultHeaders(new Header[] {
 					new BasicHeader("accept","application/json"), 
 					new BasicHeader("content-type","application/json")})

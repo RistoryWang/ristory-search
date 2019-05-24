@@ -324,6 +324,7 @@ ik配置 ： /usr/share/elasticsearch/plugins/ik/config/IKAnalyzer.cfg.xml
 </properties>
 ```
 # 服务
+## LowLevel
 ```
 curl -XPOST http://127.0.0.1:7360/search/post\?uRL\=_search -H 'Content-Type:application/json' -d'
 {
@@ -332,9 +333,13 @@ curl -XPOST http://127.0.0.1:7360/search/post\?uRL\=_search -H 'Content-Type:app
 '
 {"headers":[{"name":"content-type","buffer":{"empty":false,"full":false},"valuePos":13,"value":"application/json; charset=UTF-8","elements":[{"name":"application/json","value":null,"parameters":[{"name":"charset","value":"UTF-8"}],"parameterCount":1}]},{"name":"content-length","buffer":{"empty":false,"full":false},"valuePos":15,"value":"316","elements":[{"name":"316","value":null,"parameters":[],"parameterCount":0}]}],"statusCode":200,"responseBody":"{\"took\":3,\"timed_out\":false,\"_shards\":{\"total\":1,\"successful\":1,\"skipped\":0,\"failed\":0},\"hits\":{\"total\":{\"value\":1,\"relation\":\"eq\"},\"max_score\":1.102704,\"hits\":[{\"_index\":\"index\",\"_type\":\"_doc\",\"_id\":\"4\",\"_score\":1.102704,\"_source\":\n{\"content\":\"中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首\"}\n}]}}","errMEssage":null}%
 ```
-
+## HighLevel
+```
+curl -XPOST http://127.0.0.1:7360/search/search/match_phrase_query\?indexName\=index\&fieldName\=content\&fieldValue\=%E4%B8%AD%E5%9B%BD\&from\=1\&size\=10
+{"hits":{"hits":[{"score":0.35720474,"id":"3","type":"_doc","nestedIdentity":null,"version":-1,"seqNo":-2,"primaryTerm":0,"fields":{},"highlightFields":{},"sortValues":[],"matchedQueries":[],"explanation":null,"shard":null,"index":"index","clusterAlias":null,"sourceAsMap":{"content":"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船"},"innerHits":null,"sourceAsString":"{\"content\":\"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船\"}","sourceRef":{"fragment":true},"rawSortValues":[],"fragment":false},{"score":0.35720474,"id":"4","type":"_doc","nestedIdentity":null,"version":-1,"seqNo":-2,"primaryTerm":0,"fields":{},"highlightFields":{},"sortValues":[],"matchedQueries":[],"explanation":null,"shard":null,"index":"index","clusterAlias":null,"sourceAsMap":{"content":"中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首"},"innerHits":null,"sourceAsString":"{\"content\":\"中国驻洛杉矶领事馆遭亚裔男子枪击 嫌犯已自首\"}","sourceRef":{"fragment":true},"rawSortValues":[],"fragment":false},{"score":0.35720474,"id":"5","type":"_doc","nestedIdentity":null,"version":-1,"seqNo":-2,"primaryTerm":0,"fields":{},"highlightFields":{},"sortValues":[],"matchedQueries":[],"explanation":null,"shard":null,"index":"index","clusterAlias":null,"sourceAsMap":{"content":"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船"},"innerHits":null,"sourceAsString":"{\"content\":\"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船\"}","sourceRef":{"fragment":true},"rawSortValues":[],"fragment":false},{"score":0.35720474,"id":"6","type":"_doc","nestedIdentity":null,"version":-1,"seqNo":-2,"primaryTerm":0,"fields":{},"highlightFields":{},"sortValues":[],"matchedQueries":[],"explanation":null,"shard":null,"index":"index","clusterAlias":null,"sourceAsMap":{"content":"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船"},"innerHits":null,"sourceAsString":"{\"content\":\"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船\"}","sourceRef":{"fragment":true},"rawSortValues":[],"fragment":false},{"score":0.32586077,"id":"7","type":"_doc","nestedIdentity":null,"version":-1,"seqNo":-2,"primaryTerm":0,"fields":{},"highlightFields":{},"sortValues":[],"matchedQueries":[],"explanation":null,"shard":null,"index":"index","clusterAlias":null,"sourceAsMap":{"content":"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船"},"innerHits":null,"sourceAsString":"{\"content\":\"中韩渔警冲突调查：韩警平均每天扣1艘中国渔船\"}","sourceRef":{"fragment":true},"rawSortValues":[],"fragment":false},{"score":0.32586077,"id":"9","type":"_doc","nestedIdentity":null,"version":-1,"seqNo":-2,"primaryTerm":0,"fields":{},"highlightFields":{},"sortValues":[],"matchedQueries":[],"explanation":null,"shard":null,"index":"index","clusterAlias":null,"sourceAsMap":{"content":"中韩渔警冲突调查：韩警平均每天扣2艘中国渔船"},"innerHits":null,"sourceAsString":"{\"content\":\"中韩渔警冲突调查：韩警平均每天扣2艘中国渔船\"}","sourceRef":{"fragment":true},"rawSortValues":[],"fragment":false}],"totalHits":{"value":7,"relation":"EQUAL_TO"},"maxScore":0.58058697,"sortFields":null,"collapseField":null,"collapseValues":null,"fragment":true},"took":0,"timed_out":false}%
+```
 
 # 热更新
-* [ ] 远程扩展字段、远程扩展停止词字典
-* [ ] HTTP字典服务（ikdict）：url请求到此服务，返回的http-header需包含ETAG 和 Last-Modified，当任一值发生变化，IK插件触发重取词库动作，从而热更新词库
+* [x] 远程扩展字段、远程扩展停止词字典
+* [x] HTTP字典服务（ikdict）：url请求到此服务，返回的http-header需包含ETAG 和 Last-Modified，当任一值发生变化，IK插件触发重取词库动作，从而热更新词库
 * [ ] 更新字典服务（refresh-ikdict）
